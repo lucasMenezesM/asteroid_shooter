@@ -1,6 +1,8 @@
 import pygame
 from settings import *
 from Laser import Laser
+import sys
+
 
 class Ship(pygame.sprite.Sprite):
   def __init__(self, group):
@@ -11,6 +13,9 @@ class Ship(pygame.sprite.Sprite):
     self.cooldown_shoot = 500
     self.can_shoot = True
     self.shoot_time = None
+    self.font = pygame.font.Font("./graphics/subatomic.ttf", 20)
+
+    self.lives = 3
 
 
   def input_position(self):
@@ -35,6 +40,21 @@ class Ship(pygame.sprite.Sprite):
       Laser(laser_group, self.rect.midtop)
 
 
-  def update(self, laser_group):
+  def meteor_collision(self, meteor_group: pygame.sprite.Group):
+    if pygame.sprite.spritecollide(self, meteor_group, True):
+      self.lives -=1
+      print(self.lives)
+
+
+  def display_lives(self, surface: pygame.surface.Surface):
+    text = f"Lives: {self.lives}"
+    text_surf = self.font.render(text, True, "white")
+    text_rect = text_surf.get_rect(midleft=(30, WINDOW_HEIGHT - 30))
+    surface.blit(text_surf, text_rect)
+
+
+  def update(self, surface, laser_group, meteor_group: pygame.sprite.Group):
     self.input_position()
     self.laser_shoot(laser_group)
+    self.meteor_collision(meteor_group=meteor_group)
+    self.display_lives(surface)

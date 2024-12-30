@@ -2,7 +2,7 @@ import pygame, sys
 from settings import *
 from Ship import Ship
 from Meteor import Meteor
-from random import randint, uniform
+from Score import Score
 
 # Basic Setup
 pygame.init()
@@ -17,6 +17,9 @@ background_surf = pygame.image.load("./graphics/background.png").convert()
 spaceship_group = pygame.sprite.GroupSingle()
 laser_group = pygame.sprite.Group()
 meteor_group = pygame.sprite.Group()
+
+# Score
+score = Score()
 
 # ship
 ship = Ship(spaceship_group)
@@ -49,10 +52,19 @@ while True:
   laser_group.draw(display_surface)
   meteor_group.draw(display_surface)
 
+  # score display
+  score.update(surface=display_surface)
+
   # updates
-  spaceship_group.update(laser_group)
+
+  if ship.lives == 0:
+    pygame.quit()
+    sys.exit()
+    
+  spaceship_group.update(display_surface, laser_group, meteor_group)
   laser_group.update(dt)
   meteor_group.update(dt)
+
 
   pygame.display.update()
   
