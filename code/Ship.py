@@ -3,7 +3,6 @@ from settings import *
 from Laser import Laser
 import sys
 
-
 class Ship(pygame.sprite.Sprite):
   def __init__(self, group):
     super().__init__(group)
@@ -15,6 +14,8 @@ class Ship(pygame.sprite.Sprite):
     self.can_shoot = True
     self.shoot_time = None
     self.font = pygame.font.Font("./graphics/subatomic.ttf", 20)
+
+    self.laser_sound = pygame.mixer.Sound("./sounds/laser.ogg")
 
     self.lives = 3
 
@@ -34,6 +35,7 @@ class Ship(pygame.sprite.Sprite):
   def laser_shoot(self, laser_group):
     self.laser_timer()
     if pygame.mouse.get_pressed()[0] and self.can_shoot:
+      self.laser_sound.play()
       self.shoot_time = pygame.time.get_ticks()
       self.can_shoot = False
 

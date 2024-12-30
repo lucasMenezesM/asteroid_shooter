@@ -6,6 +6,7 @@ from Score import Score
 
 # Basic Setup
 pygame.init()
+
 clock = pygame.time.Clock()
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Arena Shooter")
@@ -32,6 +33,9 @@ meteor_event = pygame.event.custom_type()
 pygame.time.set_timer(meteor_event, 500)
 
 game_state = "start"
+
+bg_sound = pygame.mixer.Sound("sounds/music.wav")
+bg_sound.play(loops=-1)
 
 def game_over():
   game_state = "gameover"
