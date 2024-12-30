@@ -9,6 +9,7 @@ class Ship(pygame.sprite.Sprite):
     super().__init__(group)
     self.image = pygame.image.load("./graphics/ship.png").convert_alpha()
     self.rect = self.image.get_rect(center=(WINDOW_WIDTH/2, WINDOW_HEIGHT-80))
+    self.mask = pygame.mask.from_surface(self.image)
 
     self.cooldown_shoot = 500
     self.can_shoot = True
@@ -41,7 +42,7 @@ class Ship(pygame.sprite.Sprite):
 
 
   def meteor_collision(self, meteor_group: pygame.sprite.Group):
-    if pygame.sprite.spritecollide(self, meteor_group, True):
+    if pygame.sprite.spritecollide(self, meteor_group, True, pygame.sprite.collide_mask):
       self.lives -=1
       print(self.lives)
 
